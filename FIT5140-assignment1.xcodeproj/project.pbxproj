@@ -15,6 +15,13 @@
 		5963ED67211D90200050A6F9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5963ED65211D90200050A6F9 /* LaunchScreen.storyboard */; };
 		5963ED72211D90200050A6F9 /* FIT5140_assignment1Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5963ED71211D90200050A6F9 /* FIT5140_assignment1Tests.swift */; };
 		5963ED7D211D90200050A6F9 /* FIT5140_assignment1UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5963ED7C211D90200050A6F9 /* FIT5140_assignment1UITests.swift */; };
+		5963ED99212FA8D40050A6F9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5963ED98212FA8D40050A6F9 /* CoreData.framework */; };
+		5963ED9F212FF4B30050A6F9 /* LocationListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5963ED9E212FF4B30050A6F9 /* LocationListController.swift */; };
+		5963EDA1212FF4F00050A6F9 /* NewLocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5963EDA0212FF4F00050A6F9 /* NewLocationController.swift */; };
+		5963EDA3212FF5290050A6F9 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5963EDA2212FF5290050A6F9 /* MapViewController.swift */; };
+		5963EDA5212FF58A0050A6F9 /* FencedAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5963EDA4212FF58A0050A6F9 /* FencedAnnotation.swift */; };
+		5963EDA821380DAE0050A6F9 /* Animal+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5963EDA621380DAE0050A6F9 /* Animal+CoreDataClass.swift */; };
+		5963EDA921380DAE0050A6F9 /* Animal+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5963EDA721380DAE0050A6F9 /* Animal+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +56,13 @@
 		5963ED78211D90200050A6F9 /* FIT5140-assignment1UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "FIT5140-assignment1UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5963ED7C211D90200050A6F9 /* FIT5140_assignment1UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIT5140_assignment1UITests.swift; sourceTree = "<group>"; };
 		5963ED7E211D90200050A6F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5963ED98212FA8D40050A6F9 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		5963ED9E212FF4B30050A6F9 /* LocationListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationListController.swift; sourceTree = "<group>"; };
+		5963EDA0212FF4F00050A6F9 /* NewLocationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLocationController.swift; sourceTree = "<group>"; };
+		5963EDA2212FF5290050A6F9 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		5963EDA4212FF58A0050A6F9 /* FencedAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FencedAnnotation.swift; sourceTree = "<group>"; };
+		5963EDA621380DAE0050A6F9 /* Animal+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Animal+CoreDataClass.swift"; sourceTree = "<group>"; };
+		5963EDA721380DAE0050A6F9 /* Animal+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Animal+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5963ED99212FA8D40050A6F9 /* CoreData.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,10 +94,13 @@
 		5963ED4D211D901B0050A6F9 = {
 			isa = PBXGroup;
 			children = (
+				5963EDA621380DAE0050A6F9 /* Animal+CoreDataClass.swift */,
+				5963EDA721380DAE0050A6F9 /* Animal+CoreDataProperties.swift */,
 				5963ED58211D901B0050A6F9 /* FIT5140-assignment1 */,
 				5963ED70211D90200050A6F9 /* FIT5140-assignment1Tests */,
 				5963ED7B211D90200050A6F9 /* FIT5140-assignment1UITests */,
 				5963ED57211D901B0050A6F9 /* Products */,
+				5963ED97212FA8D30050A6F9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -102,6 +120,10 @@
 				5963ED59211D901B0050A6F9 /* AppDelegate.swift */,
 				5963ED5B211D901B0050A6F9 /* ViewController.swift */,
 				5963ED5D211D901B0050A6F9 /* Main.storyboard */,
+				5963ED9E212FF4B30050A6F9 /* LocationListController.swift */,
+				5963EDA0212FF4F00050A6F9 /* NewLocationController.swift */,
+				5963EDA2212FF5290050A6F9 /* MapViewController.swift */,
+				5963EDA4212FF58A0050A6F9 /* FencedAnnotation.swift */,
 				5963ED63211D90200050A6F9 /* Assets.xcassets */,
 				5963ED65211D90200050A6F9 /* LaunchScreen.storyboard */,
 				5963ED68211D90200050A6F9 /* Info.plist */,
@@ -126,6 +148,14 @@
 				5963ED7E211D90200050A6F9 /* Info.plist */,
 			);
 			path = "FIT5140-assignment1UITests";
+			sourceTree = "<group>";
+		};
+		5963ED97212FA8D30050A6F9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5963ED98212FA8D40050A6F9 /* CoreData.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,9 +289,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5963EDA921380DAE0050A6F9 /* Animal+CoreDataProperties.swift in Sources */,
 				5963ED5C211D901B0050A6F9 /* ViewController.swift in Sources */,
 				5963ED62211D901B0050A6F9 /* FIT5140_assignment1.xcdatamodeld in Sources */,
+				5963ED9F212FF4B30050A6F9 /* LocationListController.swift in Sources */,
+				5963EDA821380DAE0050A6F9 /* Animal+CoreDataClass.swift in Sources */,
+				5963EDA1212FF4F00050A6F9 /* NewLocationController.swift in Sources */,
 				5963ED5A211D901B0050A6F9 /* AppDelegate.swift in Sources */,
+				5963EDA5212FF58A0050A6F9 /* FencedAnnotation.swift in Sources */,
+				5963EDA3212FF5290050A6F9 /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
