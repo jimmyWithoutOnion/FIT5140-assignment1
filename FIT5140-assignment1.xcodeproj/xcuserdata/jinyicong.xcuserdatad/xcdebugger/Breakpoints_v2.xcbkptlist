@@ -10,43 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FIT5140-assignment1/LocationListController.swift"
-            timestampString = "557841859.2203619"
+            timestampString = "557935548.468798"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "144"
-            endingLineNumber = "144"
-            landmarkName = "didSaveLocation(name:description:pathOfPicture:latitudeOfAnimal:longtitudeOfAnimal:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FIT5140-assignment1/LocationListController.swift"
-            timestampString = "557841859.2207201"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "146"
-            endingLineNumber = "146"
-            landmarkName = "didSaveLocation(name:description:pathOfPicture:latitudeOfAnimal:longtitudeOfAnimal:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FIT5140-assignment1/LocationListController.swift"
-            timestampString = "557841859.22096"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "138"
-            endingLineNumber = "138"
+            startingLineNumber = "192"
+            endingLineNumber = "192"
             landmarkName = "didSaveLocation(name:description:pathOfPicture:latitudeOfAnimal:longtitudeOfAnimal:)"
             landmarkType = "7">
          </BreakpointContent>

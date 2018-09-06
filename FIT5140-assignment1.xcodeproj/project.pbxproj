@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		2449275842A5C5B6B384CCB4 /* Pods_FIT5140_assignment1Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA8B535E5EAACDAE4B6626DA /* Pods_FIT5140_assignment1Tests.framework */; };
+		5911D26C2140289C006C8311 /* AnimalTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5911D26B2140289C006C8311 /* AnimalTableViewCell.swift */; };
+		5911D26E21402EB7006C8311 /* AnimalDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5911D26D21402EB7006C8311 /* AnimalDetailViewController.swift */; };
+		5911D27221414682006C8311 /* launchPicture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5911D2712141467C006C8311 /* launchPicture.jpg */; };
 		5963ED5A211D901B0050A6F9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5963ED59211D901B0050A6F9 /* AppDelegate.swift */; };
 		5963ED5C211D901B0050A6F9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5963ED5B211D901B0050A6F9 /* ViewController.swift */; };
 		5963ED5F211D901B0050A6F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5963ED5D211D901B0050A6F9 /* Main.storyboard */; };
@@ -49,6 +52,9 @@
 		2336CCC7A6EA5925CA287B60 /* Pods_FIT5140_assignment1UITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FIT5140_assignment1UITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C067F52E23493DBFBBE3FE2 /* Pods_FIT5140_assignment1.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FIT5140_assignment1.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51EEC69DEE5529CC0C950EE2 /* Pods-FIT5140-assignment1.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FIT5140-assignment1.release.xcconfig"; path = "Pods/Target Support Files/Pods-FIT5140-assignment1/Pods-FIT5140-assignment1.release.xcconfig"; sourceTree = "<group>"; };
+		5911D26B2140289C006C8311 /* AnimalTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimalTableViewCell.swift; sourceTree = "<group>"; };
+		5911D26D21402EB7006C8311 /* AnimalDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimalDetailViewController.swift; sourceTree = "<group>"; };
+		5911D2712141467C006C8311 /* launchPicture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = launchPicture.jpg; sourceTree = "<group>"; };
 		5963ED56211D901B0050A6F9 /* FIT5140-assignment1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FIT5140-assignment1.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5963ED59211D901B0050A6F9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5963ED5B211D901B0050A6F9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -146,9 +152,12 @@
 		5963ED58211D901B0050A6F9 /* FIT5140-assignment1 */ = {
 			isa = PBXGroup;
 			children = (
+				5911D2712141467C006C8311 /* launchPicture.jpg */,
 				5963ED59211D901B0050A6F9 /* AppDelegate.swift */,
 				5963ED5B211D901B0050A6F9 /* ViewController.swift */,
 				5963ED5D211D901B0050A6F9 /* Main.storyboard */,
+				5911D26D21402EB7006C8311 /* AnimalDetailViewController.swift */,
+				5911D26B2140289C006C8311 /* AnimalTableViewCell.swift */,
 				5963ED9E212FF4B30050A6F9 /* LocationListController.swift */,
 				5963EDA0212FF4F00050A6F9 /* NewLocationController.swift */,
 				5963EDA2212FF5290050A6F9 /* MapViewController.swift */,
@@ -300,6 +309,7 @@
 			files = (
 				5963ED67211D90200050A6F9 /* LaunchScreen.storyboard in Resources */,
 				5963ED64211D90200050A6F9 /* Assets.xcassets in Resources */,
+				5911D27221414682006C8311 /* launchPicture.jpg in Resources */,
 				5963ED5F211D901B0050A6F9 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -326,15 +336,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-FIT5140-assignment1Tests-checkManifestLockResult.txt",
 			);
@@ -348,15 +354,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-FIT5140-assignment1/Pods-FIT5140-assignment1-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/ImagePicker/ImagePicker.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImagePicker.framework",
 			);
@@ -370,15 +372,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-FIT5140-assignment1-checkManifestLockResult.txt",
 			);
@@ -392,15 +390,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-FIT5140-assignment1UITests-checkManifestLockResult.txt",
 			);
@@ -419,6 +413,8 @@
 				5963EDA921380DAE0050A6F9 /* Animal+CoreDataProperties.swift in Sources */,
 				5963ED5C211D901B0050A6F9 /* ViewController.swift in Sources */,
 				5963ED62211D901B0050A6F9 /* FIT5140_assignment1.xcdatamodeld in Sources */,
+				5911D26E21402EB7006C8311 /* AnimalDetailViewController.swift in Sources */,
+				5911D26C2140289C006C8311 /* AnimalTableViewCell.swift in Sources */,
 				5963ED9F212FF4B30050A6F9 /* LocationListController.swift in Sources */,
 				5963EDA821380DAE0050A6F9 /* Animal+CoreDataClass.swift in Sources */,
 				5963EDA1212FF4F00050A6F9 /* NewLocationController.swift in Sources */,

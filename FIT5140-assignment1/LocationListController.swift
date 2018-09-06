@@ -15,15 +15,16 @@ protocol newLocationDelegate {
 }
 
 
-class LocationListController: UITableViewController, newLocationDelegate {
+class LocationListController: UITableViewController, newLocationDelegate, UISearchResultsUpdating {
 
     var mapViewController: MapViewController?
     var animalList: [Animal] = []
+    
+    //filteredlist for search
+    var filteredAnimalList: [Animal] = []
     var currentAnimal: Animal?
-    
-    
+
     private var managedObjectContext: NSManagedObjectContext
-    
     
     
     required init?(coder aDecoder: NSCoder) {
@@ -31,10 +32,7 @@ class LocationListController: UITableViewController, newLocationDelegate {
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
         managedObjectContext = (appDelegate?.persistentContainer.viewContext)!
         
-    
         super.init(coder: aDecoder)
-        
-        
     }
    
     
@@ -42,10 +40,6 @@ class LocationListController: UITableViewController, newLocationDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        //let location: FencedAnnotation = FencedAnnotation (newTitle: "Tiger", newSubtitle: "haha", lat: -37.877, long: 145.045)
-        
-        
-        
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Animal")
         do {
             let animals = try managedObjectContext.fetch(fetchRequest) as! [Animal]
@@ -71,16 +65,50 @@ class LocationListController: UITableViewController, newLocationDelegate {
         
         //add annotation on the map section
         
-        //self.mapViewController?.addAnnotation(annotation: location)
+        for animalLocation in animalList {
+            
+            let location: FencedAnnotation = FencedAnnotation(newTitle: animalLocation.name!, newSubtitle: "", lat: animalLocation.latitudeOfAnimal, long: animalLocation.longtitudeOfAnimal)
+            
+            //print(location.title, location.coordinate.latitude, location.coordinate.longitude)
+            
+            self.mapViewController?.addAnnotation(annotation: location)
+        }
         
+        //init filtered list
+        filteredAnimalList = animalList
         
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search animal"
+        navigationItem.searchController = searchController
+        
+        // Setup the Scope Bar
+        searchController.searchBar.scopeButtonTitles = ["Normal","Ascending", "Descending"]
+        searchController.searchBar.delegate = self
 
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+
     }
     
+    //refresh data after add new animal
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(false)
+        
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Animal")
+        do {
+            let animals = try managedObjectContext.fetch(fetchRequest) as! [Animal]
+       
+            filteredAnimalList = animals
+            
+        }
+        catch {
+            fatalError("Failed to fetch teams: \(error)")
+        }
+        
+        self.tableView.reloadData()
+    }
+    
+    //init default animal to database
     func addInitialAnimalToData() {
         var animal = NSEntityDescription.insertNewObject(forEntityName: "Animal", into: managedObjectContext)
             as! Animal
@@ -135,35 +163,56 @@ class LocationListController: UITableViewController, newLocationDelegate {
     
     func didSaveLocation(name: String, description: String, pathOfPicture: String, latitudeOfAnimal: Double, longtitudeOfAnimal: Double) {
         
-        var newAnimal: Animal!
-        newAnimal.name = name
-        newAnimal.descriptionOfAnimal = description
-        newAnimal.latitudeOfAnimal = latitudeOfAnimal
-        newAnimal.longtitudeOfAnimal = longtitudeOfAnimal
-        
-        self.animalList.append(newAnimal)
-        
-        var animalEntity = NSEntityDescription.insertNewObject(forEntityName: "Animal", into: managedObjectContext)
-            as! Animal
-        
-        animalEntity.name = name
-        animalEntity.descriptionOfAnimal = description
-        animalEntity.latitudeOfAnimal = latitudeOfAnimal
-        animalEntity.longtitudeOfAnimal = longtitudeOfAnimal
-        
-        saveData()
+//        var newAnimal: Animal!
+//        newAnimal.name = name
+//        newAnimal.descriptionOfAnimal = description
+//        newAnimal.latitudeOfAnimal = latitudeOfAnimal
+//        newAnimal.longtitudeOfAnimal = longtitudeOfAnimal
+//
+//        self.animalList.append(newAnimal)
+//
+//        var animalEntity = NSEntityDescription.insertNewObject(forEntityName: "Animal", into: managedObjectContext)
+//            as! Animal
+//        
+//        animalEntity.name = name
+//        animalEntity.descriptionOfAnimal = description
+//        animalEntity.latitudeOfAnimal = latitudeOfAnimal
+//        animalEntity.longtitudeOfAnimal = longtitudeOfAnimal
+//
+//        saveData()
         
         //self.mapViewController?.addAnnotation(annotation: animal as! MKAnnotation)
         self.tableView.reloadData()
     }
     
-
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    //load image from local storage
+    func loadImageData(fileName: String) -> UIImage? {
+        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true) [0] as String
+        let url = NSURL(fileURLWithPath: path)
+        var image: UIImage?
+        
+        if let pathComponent = url.appendingPathComponent(fileName) {
+            let filePath = pathComponent.path
+            let fileManager = FileManager.default
+            let fileData = fileManager.contents(atPath: filePath)
+            image = UIImage(data: fileData!)
+        }
+        
+        return image
     }
+    
 
+    //MARK: search result updating
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        
+        let searchBar = searchController.searchBar
+        let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
+        filterContentForSearchText(searchController.searchBar.text!, scope: scope)
+    
+    }
+    
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -173,21 +222,32 @@ class LocationListController: UITableViewController, newLocationDelegate {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return animalList.count
+        return filteredAnimalList.count
+        //return animalList.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "LocationCell", for: indexPath)
-        //let animal: Animal = self.animalList(at: indexPath.row) as! Animal
-        cell.textLabel!.text = animalList[indexPath.row].name
-        cell.detailTextLabel!.text = "Lat: \(animalList[indexPath.row].latitudeOfAnimal) Long: \(animalList[indexPath.row].longtitudeOfAnimal)"
+        let cell = tableView.dequeueReusableCell(withIdentifier: "AnimalCell", for: indexPath) as! AnimalTableViewCell
+        
+
+        cell.nameLabel!.text = filteredAnimalList[indexPath.row].name
+        cell.descriptionLabel!.text = filteredAnimalList[indexPath.row].descriptionOfAnimal
+        
+        //cell.animalImageView!.image = loadImageData(fileName: animalList[indexPath.row].photoPath!)
 
         return cell
     }
  
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.mapViewController?.focusOn(annotation: self.animalList[indexPath.row] as! MKAnnotation)
+        
+
+        let animal: Animal = self.filteredAnimalList[indexPath.row]
+        let locationAnnotation = FencedAnnotation(newTitle: animal.name!, newSubtitle: "", lat: animal.latitudeOfAnimal, long: animal.longtitudeOfAnimal)
+        
+        
+        self.mapViewController?.focusOn(annotation:  locationAnnotation)
+        
     }
     
 
@@ -208,7 +268,7 @@ class LocationListController: UITableViewController, newLocationDelegate {
         if editingStyle == .delete {
             // Delete the row from the data source
             
-            let deleteAnimal = animalList.remove(at: indexPath.row)
+            let deleteAnimal = filteredAnimalList.remove(at: indexPath.row)
             
             managedObjectContext.delete(deleteAnimal)
             tableView.deleteRows(at: [indexPath], with: .fade)
@@ -258,5 +318,51 @@ class LocationListController: UITableViewController, newLocationDelegate {
         
     }
     
-
 }
+
+extension LocationListController: UISearchBarDelegate {
+
+    
+    // MARK: - UISearchBar Delegate
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        filterContentForSearchText(searchBar.text!, scope: searchBar.scopeButtonTitles![selectedScope])
+    }
+    
+    
+    func filterContentForSearchText(_ searchText: String, scope: String = "Normal") {
+        
+        print(searchText, scope)
+        
+        if (searchText != "") {
+            filteredAnimalList = animalList.filter({(animal: Animal) -> Bool in
+                return (animal.name?.contains(searchText))!
+            })
+        } else {
+            filteredAnimalList = animalList
+        }
+        
+        switch scope {
+        case "Ascending":
+            filteredAnimalList.sort(by: { $0.name! < $1.name!})
+            
+            break
+        case "Descending":
+            filteredAnimalList.sort(by: { $0.name! > $1.name!})
+            
+            break
+        default:
+            break
+        }
+        
+        print(filteredAnimalList)
+        
+        
+        tableView.reloadData()
+        
+    }
+    
+    
+}
+
+
+

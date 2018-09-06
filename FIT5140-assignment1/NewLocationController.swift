@@ -139,6 +139,14 @@ class NewLocationController: UIViewController, CLLocationManagerDelegate, UIText
     override func viewDidLoad() {
         super.viewDidLoad()
         
+//        let imgBackArrow = UIImage(named: "backButton-48")
+//        
+//        navigationController?.navigationBar.backIndicatorImage = imgBackArrow
+//        navigationController?.navigationBar.backIndicatorTransitionMaskImage = imgBackArrow
+//        
+//        navigationItem.leftItemsSupplementBackButton = true
+//        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        
         
         descriptionTextView.textColor = UIColor.lightGray
         descriptionTextView.delegate = self
@@ -165,7 +173,7 @@ class NewLocationController: UIViewController, CLLocationManagerDelegate, UIText
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if descriptionTextView.text.isEmpty {
-            descriptionTextView.text = "Please type your description here"
+            descriptionTextView.text = "Please type animal description here"
             descriptionTextView.textColor = UIColor.lightGray
         }
     }
