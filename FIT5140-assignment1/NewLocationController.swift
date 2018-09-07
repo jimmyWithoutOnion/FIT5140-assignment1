@@ -20,12 +20,19 @@ class NewLocationController: UIViewController, CLLocationManagerDelegate, UIText
     
     var managedObjectContext: NSManagedObjectContext
     
+    let regionRadius: CLLocationDistance = 1200
+    
+    var animalLatitude: Double?
+    var animalLongtitude: Double?
+    
 
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var locationTextField: UITextField!
     @IBOutlet weak var descriptionTextView: UITextView!
     
     @IBOutlet weak var animalImageView: UIImageView!
+    @IBOutlet weak var locationMapView: MKMapView!
+    @IBOutlet weak var locationLabel: UILabel!
     
     required init?(coder aDecoder: NSCoder) {
         
@@ -71,21 +78,49 @@ class NewLocationController: UIViewController, CLLocationManagerDelegate, UIText
         //change to readable address and display
         
         
-        self.locationTextField.text = "\(currentLocation!.latitude),\(currentLocation!.longitude)"
+        //self.locationTextField.text = "\(currentLocation!.latitude),\(currentLocation!.longitude)"
         
+        
+        locationMapView.removeAnnotations(locationMapView.annotations)
+        
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = CLLocationCoordinate2D(latitude: (currentLocation!.latitude), longitude: (currentLocation!.longitude))
+        //Set title and subtitle if you want
+        annotation.title = "Here"
+        annotation.subtitle = "subtitle"
+        self.locationMapView.addAnnotation(annotation)
+        
+        
+        let location = CLLocation(latitude: (currentLocation!.latitude), longitude: (currentLocation!.longitude))
+        let geoCoder = CLGeocoder()
+        geoCoder.reverseGeocodeLocation(location, completionHandler: {(placemarks, error) in
+            if error == nil {
+                let firstLocation = placemarks?[0]
+                
+                //print(firstLocation!.name, firstLocation!.locality, firstLocation?.administrativeArea, firstLocation!.postalCode)
+                
+                self.locationLabel.text = "\((firstLocation!.name)!), \((firstLocation!.locality)!)"
+                
+            } else {
+                self.locationLabel.text = "Sorry we cannot recognize this location!"
+            }
+        })
+        
+        self.animalLatitude = currentLocation!.latitude
+        self.animalLongtitude = currentLocation!.longitude
     }
     
     @IBAction func saveNewLocation(_ sender: Any) {
         
-        let splitLocation = locationTextField.text!.components(separatedBy: ",")
+        //let splitLocation = locationTextField.text!.components(separatedBy: ",")
         
         let nameText = nameTextField.text!
         let descriptionText = descriptionTextView.text!
         
-        let lat = Double(splitLocation[0])!
-  
-        let long = Double(splitLocation[1])!
-        
+        //let lat = Double(splitLocation[0])!
+        let lat = self.animalLatitude
+        //let long = Double(splitLocation[1])!
+        let long = self.animalLongtitude
         
         guard let image = animalImageView.image else {
             displayMessage("Cannot save until a photo has been taken!", "Error")
@@ -110,8 +145,8 @@ class NewLocationController: UIViewController, CLLocationManagerDelegate, UIText
             animal.name = nameText
             animal.descriptionOfAnimal = descriptionText
             animal.photoPath = "\(dateOfPicture)"
-            animal.latitudeOfAnimal = lat
-            animal.longtitudeOfAnimal = long
+            animal.latitudeOfAnimal = lat!
+            animal.longtitudeOfAnimal = long!
             
             
             //save data to the database
@@ -152,6 +187,59 @@ class NewLocationController: UIViewController, CLLocationManagerDelegate, UIText
         locationManger.startUpdatingLocation()
         //locationManger.stopUpdatingLocation()
         
+        let initialLocation = CLLocation(latitude: -37.877, longitude: 145.045)
+        centerMapOnLocation(location: initialLocation)
+        
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(addAnnotationOnLongPress(gesture:)))
+        longPressGesture.minimumPressDuration = 1.0
+        self.locationMapView.addGestureRecognizer(longPressGesture)
+
+        
+    }
+    
+    //reference from https://stackoverflow.com/questions/40844336/create-long-press-gesture-recognizer-with-annotation-pin
+    @objc func addAnnotationOnLongPress(gesture: UILongPressGestureRecognizer) {
+        
+        if gesture.state == .ended {
+            let point = gesture.location(in: self.locationMapView)
+            let coordinate = self.locationMapView.convert(point, toCoordinateFrom: self.locationMapView)
+            //print(coordinate)
+            
+            locationMapView.removeAnnotations(locationMapView.annotations)
+            
+            //Now use this coordinate to add annotation on map.
+            var annotation = MKPointAnnotation()
+            annotation.coordinate = coordinate
+            //Set title and subtitle if you want
+            annotation.title = "Here"
+            annotation.subtitle = "subtitle"
+            self.locationMapView.addAnnotation(annotation)
+            
+            
+            let location = CLLocation(latitude: (annotation.coordinate.latitude), longitude: (annotation.coordinate.longitude))
+            let geoCoder = CLGeocoder()
+            geoCoder.reverseGeocodeLocation(location, completionHandler: {(placemarks, error) in
+                if error == nil {
+                    let firstLocation = placemarks?[0]
+                    
+                    print(firstLocation!.name, firstLocation!.locality, firstLocation?.administrativeArea, firstLocation!.postalCode)
+                    
+                    self.locationLabel.text = "\((firstLocation!.name)!), \((firstLocation!.locality)!)"
+                    
+                    //completionHandler(firstLocation)
+                } else {
+                    self.locationLabel.text = "Sorry we cannot recognize this location!"
+                }
+            })
+            
+            self.animalLatitude = annotation.coordinate.latitude
+            self.animalLongtitude = annotation.coordinate.longitude
+        }
+    }
+    
+    func centerMapOnLocation(location: CLLocation) {
+        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRadius, regionRadius)
+        locationMapView.setRegion(coordinateRegion, animated: true)
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {

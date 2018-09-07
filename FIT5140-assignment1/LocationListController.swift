@@ -66,9 +66,13 @@ class LocationListController: UITableViewController, newLocationDelegate, UISear
             fatalError("Failed to fetch teams: \(error)")
         }
         
+        //init filtered list
+        filteredAnimalList = animalList
+        
+        
         //add annotation on the map section
         
-        for animalLocation in animalList {
+        for animalLocation in filteredAnimalList {
             
             let location: FencedAnnotation = FencedAnnotation(newTitle: animalLocation.name!, newSubtitle: "", lat: animalLocation.latitudeOfAnimal, long: animalLocation.longtitudeOfAnimal)
             
@@ -84,8 +88,7 @@ class LocationListController: UITableViewController, newLocationDelegate, UISear
             locationManger.startMonitoring(for: geoLocation!)
         }
         
-        //init filtered list
-        filteredAnimalList = animalList
+
         
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
@@ -126,6 +129,23 @@ class LocationListController: UITableViewController, newLocationDelegate, UISear
             let animals = try managedObjectContext.fetch(fetchRequest) as! [Animal]
        
             filteredAnimalList = animals
+            
+            for animalLocation in filteredAnimalList {
+                
+                let location: FencedAnnotation = FencedAnnotation(newTitle: animalLocation.name!, newSubtitle: "", lat: animalLocation.latitudeOfAnimal, long: animalLocation.longtitudeOfAnimal)
+                
+                self.mapViewController?.addAnnotation(annotation: location)
+                
+                //
+                geoLocation = CLCircularRegion(center: location.coordinate, radius: 100, identifier: location.title!)
+                geoLocation!.notifyOnEntry = true
+                geoLocation!.notifyOnExit = true
+                
+                locationManger.delegate = self
+                locationManger.requestAlwaysAuthorization()
+                locationManger.startMonitoring(for: geoLocation!)
+            }
+            
             
         }
         catch {
@@ -322,6 +342,10 @@ class LocationListController: UITableViewController, newLocationDelegate, UISear
             tableView.deleteRows(at: [indexPath], with: .fade)
             
             tableView.reloadData()
+            
+            
+            //delete the annotation on the map
+            
             
             saveData()
             
