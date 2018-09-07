@@ -39,8 +39,6 @@ class AnimalDetailViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         
-        print(incomeAnimalName)
-        
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Animal")
         do {
             let animals = try managedObjectContext.fetch(fetchRequest) as! [Animal]
@@ -67,11 +65,11 @@ class AnimalDetailViewController: UIViewController {
             }
         }
         
-        
+        //load animal detail to display
         animalName.text = animal?.name
         animalDescription.text = animal?.descriptionOfAnimal
         
-        
+        //transfer the lat and long to the fridendly location
         let location = CLLocation(latitude: (animal?.latitudeOfAnimal)!, longitude: (animal?.longtitudeOfAnimal)!)
         let geoCoder = CLGeocoder()
         geoCoder.reverseGeocodeLocation(location, completionHandler: {(placemarks, error) in
@@ -88,9 +86,8 @@ class AnimalDetailViewController: UIViewController {
             }
         })
         
-        
+        //load the picture to the image view
         do {
-            
             if (animal?.photoPath != "") {
                 //print(filteredAnimalList[indexPath.row].name)
                 try animalImageVIew!.image = loadImageData(fileName: (animal?.photoPath!)!)

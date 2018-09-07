@@ -14,11 +14,6 @@ protocol newLocationDelegate {
     func didSaveLocation(name: String, description: String, pathOfPicture: String, latitudeOfAnimal: Double, longtitudeOfAnimal: Double)
 }
 
-//protocol selectedAnimalDelegate {
-//    func selectedAnimal(animal: Animal)
-//}
-
-
 class LocationListController: UITableViewController, newLocationDelegate, UISearchResultsUpdating, CLLocationManagerDelegate {
 
     var mapViewController: MapViewController?
@@ -32,12 +27,10 @@ class LocationListController: UITableViewController, newLocationDelegate, UISear
     var geoLocation: CLCircularRegion?
     var locationManger: CLLocationManager = CLLocationManager()
     
-//    var delegate: selectedAnimalDelegate?
-    
-
+    //declear the var for coredata
     private var managedObjectContext: NSManagedObjectContext
     
-    
+    //init the required var
     required init?(coder aDecoder: NSCoder) {
         
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
@@ -51,10 +44,12 @@ class LocationListController: UITableViewController, newLocationDelegate, UISear
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        //fetch data from database
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Animal")
         do {
             let animals = try managedObjectContext.fetch(fetchRequest) as! [Animal]
             
+            //if nothing in the database
             if animals.count == 0 {
                 
                 addInitialAnimalToData()
@@ -95,14 +90,14 @@ class LocationListController: UITableViewController, newLocationDelegate, UISear
         }
         
 
-        
+        //init the search bar
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search animal"
         navigationItem.searchController = searchController
         
-        // Setup the Scope Bar
+        // Setup the Scope Bar under the search bar
         searchController.searchBar.scopeButtonTitles = ["Normal","Ascending", "Descending"]
         searchController.searchBar.delegate = self
 
@@ -221,26 +216,6 @@ class LocationListController: UITableViewController, newLocationDelegate, UISear
     
     func didSaveLocation(name: String, description: String, pathOfPicture: String, latitudeOfAnimal: Double, longtitudeOfAnimal: Double) {
         
-//        var newAnimal: Animal!
-//        newAnimal.name = name
-//        newAnimal.descriptionOfAnimal = description
-//        newAnimal.latitudeOfAnimal = latitudeOfAnimal
-//        newAnimal.longtitudeOfAnimal = longtitudeOfAnimal
-//
-//        self.animalList.append(newAnimal)
-//
-//        var animalEntity = NSEntityDescription.insertNewObject(forEntityName: "Animal", into: managedObjectContext)
-//            as! Animal
-//        
-//        animalEntity.name = name
-//        animalEntity.descriptionOfAnimal = description
-//        animalEntity.latitudeOfAnimal = latitudeOfAnimal
-//        animalEntity.longtitudeOfAnimal = longtitudeOfAnimal
-//
-//        saveData()
-        
-        //self.mapViewController?.addAnnotation(annotation: animal as! MKAnnotation)
-        
         self.tableView.reloadData()
     }
     
@@ -313,13 +288,13 @@ class LocationListController: UITableViewController, newLocationDelegate, UISear
     }
  
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-
+    
         let animal: Animal = self.filteredAnimalList[indexPath.row]
         let locationAnnotation = FencedAnnotation(newTitle: animal.name!, newSubtitle: animal.photoPath!, lat: animal.latitudeOfAnimal, long: animal.longtitudeOfAnimal)
         
-        self.mapViewController?.focusOn(annotation: locationAnnotation)
         
+        //when user select focu on it
+        self.mapViewController?.focusOn(annotation: locationAnnotation)
         
     }
     
@@ -331,6 +306,7 @@ class LocationListController: UITableViewController, newLocationDelegate, UISear
         return true
     }
  
+    //allow user edit
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         return .delete
     }
@@ -349,9 +325,9 @@ class LocationListController: UITableViewController, newLocationDelegate, UISear
             tableView.reloadData()
             
             //delete the annotation on the map, reload all the annotation
-            
             self.mapViewController?.removeAnnotations()
             
+            //reload all the annotation
             for animalLocation in filteredAnimalList {
                 
                 let location: FencedAnnotation = FencedAnnotation(newTitle: animalLocation.name!, newSubtitle: animalLocation.photoPath!, lat: animalLocation.latitudeOfAnimal, long: animalLocation.longtitudeOfAnimal)
@@ -368,12 +344,12 @@ class LocationListController: UITableViewController, newLocationDelegate, UISear
                 locationManger.startMonitoring(for: geoLocation!)
             }
             
-            
             saveData()
             
         }
     }
     
+    //save the data in the databse
     func saveData() {
         do {
             try managedObjectContext.save()
@@ -382,24 +358,7 @@ class LocationListController: UITableViewController, newLocationDelegate, UISear
             print("Could not save Core Data: \(error)")
         }
     }
- 
 
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    
     //MARK: - Navigation
 
     //In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -409,28 +368,17 @@ class LocationListController: UITableViewController, newLocationDelegate, UISear
             let controller = segue.destination as! NewLocationController
             controller.delegate = self
         }
-            
-//        } else if (segue.identifier == "AnimalDetailSegue") {
-//            let detailAnimal = filteredAnimalList[(self.tableView.indexPathForSelectedRow?.row)!]
-//
-//            let controller = segue.destination as! AnimalDetailViewController
-//            controller.animal = detailAnimal
-//
-//        }
-        
     }
-    
 }
 
 extension LocationListController: UISearchBarDelegate {
 
-    
     // MARK: - UISearchBar Delegate
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
         filterContentForSearchText(searchBar.text!, scope: searchBar.scopeButtonTitles![selectedScope])
     }
     
-    
+    //
     func filterContentForSearchText(_ searchText: String, scope: String = "Normal") {
         
         print(searchText, scope)
@@ -442,7 +390,7 @@ extension LocationListController: UISearchBarDelegate {
         } else {
             filteredAnimalList = animalList
         }
-        
+        //sort function reference from youtube video
         switch scope {
         case "Ascending":
             filteredAnimalList.sort(by: { $0.name! < $1.name!})
@@ -456,8 +404,7 @@ extension LocationListController: UISearchBarDelegate {
             break
         }
         
-        print(filteredAnimalList)
-        
+        //print(filteredAnimalList)
         
         tableView.reloadData()
         

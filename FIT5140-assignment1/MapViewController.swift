@@ -27,16 +27,19 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         mapView.delegate = self
     }
     
+    //init the user's view
     func centerMapOnLocation(location: CLLocation) {
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRadius, regionRadius)
         mapView.setRegion(coordinateRegion, animated: true)
     }
     
+    //let user add annotation
     func addAnnotation(annotation: MKAnnotation) {
         print("addanno", annotation.title, annotation.subtitle)
         self.mapView.addAnnotation(annotation)
     }
     
+    //focus the user eye on it
     func focusOn(annotation: MKAnnotation) {
         
         print("focusanno", annotation.title, annotation.subtitle)
@@ -52,12 +55,13 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         self.mapView.removeAnnotation(annotation)
     }
     
+    //remove all the annotation on the map
     func removeAnnotations() {
         self.mapView.removeAnnotations(mapView.annotations)
     }
     
     
-    
+    //custom the annotation for all the sign on the map
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if annotation is MKUserLocation {
             return nil
@@ -72,8 +76,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         var icon: UIImage?
         annotationView?.canShowCallout = true
      
+        //get annotation's subtitle original image dont have this and new image have the image path in this var
         let imagePath = annotation.subtitle as! String
-        print(imagePath)
+        //print(imagePath)
         
         if imagePath == "" {
             let pathForOriginal = annotation.title as! String
@@ -83,6 +88,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         }
         UIGraphicsEndImageContext()
         
+        //set the custom icon to the annotation view image
         annotationView?.image = icon
         
         //show informatin icon on the right side
@@ -92,12 +98,14 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         return annotationView
     }
     
+    //crop the image to a certain size
     func convertImage(image:UIImage, scaledToSize newSize:CGSize) -> UIImage{
         UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0)
+        //redraw the image
         image.draw(in: CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height))
-        let converteredImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        let afterImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
-        return converteredImage
+        return afterImage
     }
     
     //load image from local storage
@@ -116,16 +124,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         return image
     }
     
-//    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-//
-//        if control == view.rightCalloutAccessoryView {
-//            performSegue(withIdentifier: "toTheMoon", sender: self)
-//
-//            print("jump to the detail page")
-//
-//        }
-//    }
-    
+    // action when user click the imformation icon
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if control == view.rightCalloutAccessoryView {
             //print(view.annotation?.title)
@@ -133,9 +132,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             performSegue(withIdentifier: "animalDetailSegue", sender: self)
         }
     }
-    
-    
-    
 
     
     // MARK: - Navigation
@@ -146,15 +142,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         // Pass the selected object to the new view controller.
         if segue.identifier == "animalDetailSegue" {
             
-//            let masterVC = self.splitViewController?.viewControllers.first
-//            let detailVC = ((self.splitViewController?.viewControllers.count)! > 1) ? self.splitViewController?.viewControllers[1] : nil
-            
-            
-
-//            print(view.annotation?.title)
-            
-//            let detailAnimal = filteredAnimalList[(self.tableView.indexPathForSelectedRow?.row)!]
-//
             let controller = segue.destination as! AnimalDetailViewController
             controller.incomeAnimalName = selectedAnimalName
             

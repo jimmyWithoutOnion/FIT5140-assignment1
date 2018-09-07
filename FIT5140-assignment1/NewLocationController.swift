@@ -42,6 +42,8 @@ class NewLocationController: UIViewController, CLLocationManagerDelegate, UIText
         
     }
     
+    //take action when click the photo
+    //refernece from the github library
     @IBAction func takePictureForAnimal(_ sender: Any) {
         let imagePickerController = ImagePickerController()
         imagePickerController.delegate = self
@@ -54,6 +56,8 @@ class NewLocationController: UIViewController, CLLocationManagerDelegate, UIText
         
     }
     
+    
+    //when user click the done button
     func doneButtonDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
         guard let image = images.first else {
             dismiss(animated: true, completion: nil)
@@ -73,9 +77,7 @@ class NewLocationController: UIViewController, CLLocationManagerDelegate, UIText
     
     @IBAction func saveCurrentLocation(_ sender: Any) {
         
-        
         //change to readable address and display
-        
         
         //self.locationTextField.text = "\(currentLocation!.latitude),\(currentLocation!.longitude)"
         
@@ -114,6 +116,7 @@ class NewLocationController: UIViewController, CLLocationManagerDelegate, UIText
             self.animalLongtitude = currentLocation!.longitude
         }
     }
+    
     
     @IBAction func saveNewLocation(_ sender: Any) {
         
@@ -176,6 +179,7 @@ class NewLocationController: UIViewController, CLLocationManagerDelegate, UIText
         }
     }
     
+    //display message for alert
     func displayMessage(_ message: String, _ title: String) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         
@@ -250,11 +254,13 @@ class NewLocationController: UIViewController, CLLocationManagerDelegate, UIText
         }
     }
     
+    //center the init map
     func centerMapOnLocation(location: CLLocation) {
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRadius, regionRadius)
         locationMapView.setRegion(coordinateRegion, animated: true)
     }
     
+    //clear the text view when user start editing
     func textViewDidBeginEditing(_ textView: UITextView) {
         if descriptionTextView.textColor == UIColor.lightGray {
             descriptionTextView.text = nil
@@ -262,7 +268,7 @@ class NewLocationController: UIViewController, CLLocationManagerDelegate, UIText
         }
     }
     
-    
+    //when end editing display hint fot user
     func textViewDidEndEditing(_ textView: UITextView) {
         if descriptionTextView.text.isEmpty {
             descriptionTextView.text = "Please type your Description here"
@@ -286,11 +292,6 @@ class NewLocationController: UIViewController, CLLocationManagerDelegate, UIText
 //
 //    }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
 
     /*
     // MARK: - Navigation
