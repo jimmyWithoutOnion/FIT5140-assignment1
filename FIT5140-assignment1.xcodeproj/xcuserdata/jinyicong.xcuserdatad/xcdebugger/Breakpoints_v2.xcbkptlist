@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FIT5140-assignment1/LocationListController.swift"
-            timestampString = "557935548.468798"
+            timestampString = "557987369.807058"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "192"
-            endingLineNumber = "192"
+            startingLineNumber = "187"
+            endingLineNumber = "187"
             landmarkName = "didSaveLocation(name:description:pathOfPicture:latitudeOfAnimal:longtitudeOfAnimal:)"
             landmarkType = "7">
          </BreakpointContent>

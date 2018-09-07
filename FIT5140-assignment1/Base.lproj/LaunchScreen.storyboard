@@ -22,8 +22,8 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Monash Zoo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JMy-3M-ytf">
-                                <rect key="frame" x="105" y="142" width="165" height="33"/>
-                                <fontDescription key="fontDescription" type="system" weight="black" pointSize="27"/>
+                                <rect key="frame" x="78" y="132" width="219.5" height="43"/>
+                                <fontDescription key="fontDescription" type="system" weight="black" pointSize="36"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
