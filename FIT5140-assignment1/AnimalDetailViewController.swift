@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import CoreData
 
 class AnimalDetailViewController: UIViewController {
 
@@ -18,11 +19,54 @@ class AnimalDetailViewController: UIViewController {
     
     var animal: Animal?
     
+    var incomeAnimalName: String?
+    
+    var managedObjectContext: NSManagedObjectContext
+    var animalList: [Animal] = []
+    
+    required init?(coder aDecoder: NSCoder) {
+        
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        managedObjectContext = (appDelegate?.persistentContainer.viewContext)!
+        
+        super.init(coder: aDecoder)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.navigationController?.isNavigationBarHidden = false
         // Do any additional setup after loading the view.
+        
+        
+        print(incomeAnimalName)
+        
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Animal")
+        do {
+            let animals = try managedObjectContext.fetch(fetchRequest) as! [Animal]
+            
+            if animals.count == 0 {
+                
+                //refetch the data from the database
+                let newAnimals = try managedObjectContext.fetch(fetchRequest) as! [Animal]
+                animalList = newAnimals
+                
+            } else {
+                animalList = animals
+                
+            }
+        }
+        catch {
+            fatalError("Failed to fetch teams: \(error)")
+        }
+        
+        
+        for newAnimal in animalList {
+            if newAnimal.name == incomeAnimalName! {
+                animal = newAnimal
+            }
+        }
+        
         
         animalName.text = animal?.name
         animalDescription.text = animal?.descriptionOfAnimal

@@ -34,6 +34,7 @@
                     </view>
                     <connections>
                         <outlet property="mapView" destination="X6S-3T-1Jl" id="49V-bp-XKl"/>
+                        <segue destination="Qz3-YG-g9U" kind="show" identifier="animalDetailSegue" id="5Fk-d8-GbE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6ep-Mp-nUH" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -94,7 +95,6 @@
                                     <outlet property="animalImageView" destination="aM6-DF-IgU" id="eww-5z-D0i"/>
                                     <outlet property="descriptionLabel" destination="wcV-t4-QXH" id="vM1-bS-LZf"/>
                                     <outlet property="nameLabel" destination="1E7-3N-rN2" id="lJ9-SB-6Dm"/>
-                                    <segue destination="Qz3-YG-g9U" kind="show" identifier="AnimalDetailSegue" id="f31-9N-5W0"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -141,20 +141,13 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
-                                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iG6-Vg-pUm">
-                                                <rect key="frame" x="238" y="146" width="98" height="30"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <nil key="textColor"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
-                                            </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XYN-U6-hox">
                                                 <rect key="frame" x="24" y="146" width="66" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Please type your Description here." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="sSo-dE-x9p">
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Please type your Description here" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="sSo-dE-x9p">
                                                 <rect key="frame" x="24" y="459" width="327" height="50"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
@@ -274,7 +267,6 @@
                         <outlet property="descriptionTextView" destination="sSo-dE-x9p" id="4ps-ao-J23"/>
                         <outlet property="locationLabel" destination="wsK-Mr-Dxe" id="AK6-x0-td5"/>
                         <outlet property="locationMapView" destination="fDT-LO-1Wp" id="ia6-q0-O9h"/>
-                        <outlet property="locationTextField" destination="iG6-Vg-pUm" id="lB3-Vg-Bac"/>
                         <outlet property="nameTextField" destination="FQc-Ts-2Ga" id="hwX-cc-dZv"/>
                     </connections>
                 </viewController>
@@ -391,7 +383,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IlP-EP-x0q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1509.5999999999999" y="1392.953523238381"/>
+            <point key="canvasLocation" x="1510" y="1129"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="0il-a7-hAr">

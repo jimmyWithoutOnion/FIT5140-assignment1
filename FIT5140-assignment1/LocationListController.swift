@@ -14,6 +14,10 @@ protocol newLocationDelegate {
     func didSaveLocation(name: String, description: String, pathOfPicture: String, latitudeOfAnimal: Double, longtitudeOfAnimal: Double)
 }
 
+//protocol selectedAnimalDelegate {
+//    func selectedAnimal(animal: Animal)
+//}
+
 
 class LocationListController: UITableViewController, newLocationDelegate, UISearchResultsUpdating, CLLocationManagerDelegate {
 
@@ -27,6 +31,8 @@ class LocationListController: UITableViewController, newLocationDelegate, UISear
     //geofencing variable
     var geoLocation: CLCircularRegion?
     var locationManger: CLLocationManager = CLLocationManager()
+    
+//    var delegate: selectedAnimalDelegate?
     
 
     private var managedObjectContext: NSManagedObjectContext
@@ -74,7 +80,7 @@ class LocationListController: UITableViewController, newLocationDelegate, UISear
         
         for animalLocation in filteredAnimalList {
             
-            let location: FencedAnnotation = FencedAnnotation(newTitle: animalLocation.name!, newSubtitle: "", lat: animalLocation.latitudeOfAnimal, long: animalLocation.longtitudeOfAnimal)
+            let location: FencedAnnotation = FencedAnnotation(newTitle: animalLocation.name!, newSubtitle: animalLocation.photoPath!, lat: animalLocation.latitudeOfAnimal, long: animalLocation.longtitudeOfAnimal)
             
             self.mapViewController?.addAnnotation(annotation: location)
             
@@ -132,7 +138,7 @@ class LocationListController: UITableViewController, newLocationDelegate, UISear
             
             for animalLocation in filteredAnimalList {
                 
-                let location: FencedAnnotation = FencedAnnotation(newTitle: animalLocation.name!, newSubtitle: "", lat: animalLocation.latitudeOfAnimal, long: animalLocation.longtitudeOfAnimal)
+                let location: FencedAnnotation = FencedAnnotation(newTitle: animalLocation.name!, newSubtitle: animalLocation.photoPath!, lat: animalLocation.latitudeOfAnimal, long: animalLocation.longtitudeOfAnimal)
                 
                 self.mapViewController?.addAnnotation(annotation: location)
                 
@@ -310,11 +316,10 @@ class LocationListController: UITableViewController, newLocationDelegate, UISear
         
 
         let animal: Animal = self.filteredAnimalList[indexPath.row]
-        let locationAnnotation = FencedAnnotation(newTitle: animal.name!, newSubtitle: "", lat: animal.latitudeOfAnimal, long: animal.longtitudeOfAnimal)
-        
-        //detailedAnimal = animal
+        let locationAnnotation = FencedAnnotation(newTitle: animal.name!, newSubtitle: animal.photoPath!, lat: animal.latitudeOfAnimal, long: animal.longtitudeOfAnimal)
         
         self.mapViewController?.focusOn(annotation: locationAnnotation)
+        
         
     }
     
@@ -343,8 +348,25 @@ class LocationListController: UITableViewController, newLocationDelegate, UISear
             
             tableView.reloadData()
             
+            //delete the annotation on the map, reload all the annotation
             
-            //delete the annotation on the map
+            self.mapViewController?.removeAnnotations()
+            
+            for animalLocation in filteredAnimalList {
+                
+                let location: FencedAnnotation = FencedAnnotation(newTitle: animalLocation.name!, newSubtitle: animalLocation.photoPath!, lat: animalLocation.latitudeOfAnimal, long: animalLocation.longtitudeOfAnimal)
+                
+                self.mapViewController?.addAnnotation(annotation: location)
+                
+                //
+                geoLocation = CLCircularRegion(center: location.coordinate, radius: 100, identifier: location.title!)
+                geoLocation!.notifyOnEntry = true
+                geoLocation!.notifyOnExit = true
+                
+                locationManger.delegate = self
+                locationManger.requestAlwaysAuthorization()
+                locationManger.startMonitoring(for: geoLocation!)
+            }
             
             
             saveData()
@@ -386,14 +408,15 @@ class LocationListController: UITableViewController, newLocationDelegate, UISear
         if (segue.identifier == "AddLocation") {
             let controller = segue.destination as! NewLocationController
             controller.delegate = self
-            
-        } else if (segue.identifier == "AnimalDetailSegue") {
-            let detailAnimal = filteredAnimalList[(self.tableView.indexPathForSelectedRow?.row)!]
-            
-            let controller = segue.destination as! AnimalDetailViewController
-            controller.animal = detailAnimal
-            
         }
+            
+//        } else if (segue.identifier == "AnimalDetailSegue") {
+//            let detailAnimal = filteredAnimalList[(self.tableView.indexPathForSelectedRow?.row)!]
+//
+//            let controller = segue.destination as! AnimalDetailViewController
+//            controller.animal = detailAnimal
+//
+//        }
         
     }
     

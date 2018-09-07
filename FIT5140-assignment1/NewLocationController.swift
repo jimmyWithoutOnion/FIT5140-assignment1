@@ -27,7 +27,6 @@ class NewLocationController: UIViewController, CLLocationManagerDelegate, UIText
     
 
     @IBOutlet weak var nameTextField: UITextField!
-    @IBOutlet weak var locationTextField: UITextField!
     @IBOutlet weak var descriptionTextView: UITextView!
     
     @IBOutlet weak var animalImageView: UIImageView!
@@ -80,85 +79,99 @@ class NewLocationController: UIViewController, CLLocationManagerDelegate, UIText
         
         //self.locationTextField.text = "\(currentLocation!.latitude),\(currentLocation!.longitude)"
         
-        
         locationMapView.removeAnnotations(locationMapView.annotations)
-        
+
         let annotation = MKPointAnnotation()
-        annotation.coordinate = CLLocationCoordinate2D(latitude: (currentLocation!.latitude), longitude: (currentLocation!.longitude))
-        //Set title and subtitle if you want
-        annotation.title = "Here"
-        annotation.subtitle = "subtitle"
-        self.locationMapView.addAnnotation(annotation)
         
-        
-        let location = CLLocation(latitude: (currentLocation!.latitude), longitude: (currentLocation!.longitude))
-        let geoCoder = CLGeocoder()
-        geoCoder.reverseGeocodeLocation(location, completionHandler: {(placemarks, error) in
-            if error == nil {
-                let firstLocation = placemarks?[0]
-                
-                //print(firstLocation!.name, firstLocation!.locality, firstLocation?.administrativeArea, firstLocation!.postalCode)
-                
-                self.locationLabel.text = "\((firstLocation!.name)!), \((firstLocation!.locality)!)"
-                
-            } else {
-                self.locationLabel.text = "Sorry we cannot recognize this location!"
-            }
-        })
-        
-        self.animalLatitude = currentLocation!.latitude
-        self.animalLongtitude = currentLocation!.longitude
+        if currentLocation!.latitude == nil || currentLocation!.longitude == nil {
+            displayMessage("please open simulator location first", "Error")
+            
+        } else {
+
+            annotation.coordinate = CLLocationCoordinate2D(latitude: (currentLocation!.latitude), longitude: (currentLocation!.longitude))
+            //Set title and subtitle if you want
+            annotation.title = "Here"
+            annotation.subtitle = "subtitle"
+            self.locationMapView.addAnnotation(annotation)
+            
+            
+            let location = CLLocation(latitude: (currentLocation!.latitude), longitude: (currentLocation!.longitude))
+            let geoCoder = CLGeocoder()
+            geoCoder.reverseGeocodeLocation(location, completionHandler: {(placemarks, error) in
+                if error == nil {
+                    let firstLocation = placemarks?[0]
+                    
+                    //print(firstLocation!.name, firstLocation!.locality, firstLocation?.administrativeArea, firstLocation!.postalCode)
+                    
+                    self.locationLabel.text = "\((firstLocation!.name)!), \((firstLocation!.locality)!)"
+                    
+                } else {
+                    self.locationLabel.text = "Sorry we cannot recognize this location!"
+                }
+            })
+            
+            self.animalLatitude = currentLocation!.latitude
+            self.animalLongtitude = currentLocation!.longitude
+        }
     }
     
     @IBAction func saveNewLocation(_ sender: Any) {
         
-        //let splitLocation = locationTextField.text!.components(separatedBy: ",")
-        
         let nameText = nameTextField.text!
         let descriptionText = descriptionTextView.text!
         
-        //let lat = Double(splitLocation[0])!
         let lat = self.animalLatitude
-        //let long = Double(splitLocation[1])!
+
+
         let long = self.animalLongtitude
         
-        guard let image = animalImageView.image else {
-            displayMessage("Cannot save until a photo has been taken!", "Error")
-            return
-        }
+        //validation is here
+        if nameText == "" {
+            displayMessage("Sorry, please insert animal's name", "Error")
+        } else if descriptionText == "" || descriptionText == "Please type your Description here" {
+            displayMessage("Sorry, please type in animal's descriptions", "Error")
+        } else if lat == nil || long == nil{
+            displayMessage("Sorry, please press long on the map to choose a location", "Error")
+        } else {
         
-        let dateOfPicture = UInt(Date().timeIntervalSince1970)
-        var dataOfImage = Data()
-        dataOfImage = UIImageJPEGRepresentation(image, 0.8)!
-        
-        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true) [0] as String
-        let url = NSURL(fileURLWithPath: path)
-        if let pathComponent = url.appendingPathComponent("\(dateOfPicture)") {
-            let filePath = pathComponent.path
-            let fileManager = FileManager.default
-            
-            fileManager.createFile(atPath: filePath, contents: dataOfImage, attributes: nil)
-            
-            var animal = NSEntityDescription.insertNewObject(forEntityName: "Animal", into: managedObjectContext)
-                as! Animal
-            
-            animal.name = nameText
-            animal.descriptionOfAnimal = descriptionText
-            animal.photoPath = "\(dateOfPicture)"
-            animal.latitudeOfAnimal = lat!
-            animal.longtitudeOfAnimal = long!
-            
-            
-            //save data to the database
-            do {
-                try managedObjectContext.save()
-            }
-            catch let error {
-                print("Could not save Core Data: \(error)")
+            guard let image = animalImageView.image else {
+                displayMessage("Sorry, cannot save until a photo has been taken", "Error")
+                return
             }
             
-            navigationController?.popViewController(animated: true)
-            //addNewLocation(name: nameText, description: descriptionText, lat: lat, long: long)
+            let dateOfPicture = UInt(Date().timeIntervalSince1970)
+            var dataOfImage = Data()
+            dataOfImage = UIImageJPEGRepresentation(image, 0.8)!
+            
+            let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true) [0] as String
+            let url = NSURL(fileURLWithPath: path)
+            if let pathComponent = url.appendingPathComponent("\(dateOfPicture)") {
+                let filePath = pathComponent.path
+                let fileManager = FileManager.default
+                
+                fileManager.createFile(atPath: filePath, contents: dataOfImage, attributes: nil)
+                
+                var animal = NSEntityDescription.insertNewObject(forEntityName: "Animal", into: managedObjectContext)
+                    as! Animal
+                
+                animal.name = nameText
+                animal.descriptionOfAnimal = descriptionText
+                animal.photoPath = "\(dateOfPicture)"
+                animal.latitudeOfAnimal = lat!
+                animal.longtitudeOfAnimal = long!
+                
+                
+                //save data to the database
+                do {
+                    try managedObjectContext.save()
+                }
+                catch let error {
+                    print("Could not save Core Data: \(error)")
+                }
+                
+                navigationController?.popViewController(animated: true)
+                //addNewLocation(name: nameText, description: descriptionText, lat: lat, long: long)
+            }
             
         }
     }
@@ -252,7 +265,7 @@ class NewLocationController: UIViewController, CLLocationManagerDelegate, UIText
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if descriptionTextView.text.isEmpty {
-            descriptionTextView.text = "Please type animal description here"
+            descriptionTextView.text = "Please type your Description here"
             descriptionTextView.textColor = UIColor.lightGray
         }
     }
