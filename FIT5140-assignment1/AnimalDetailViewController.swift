@@ -7,17 +7,16 @@
 //
 
 import UIKit
+import MapKit
 
 class AnimalDetailViewController: UIViewController {
 
     @IBOutlet weak var animalName: UILabel!
     @IBOutlet weak var animalImageVIew: UIImageView!
     @IBOutlet weak var animalDescription: UILabel!
+    @IBOutlet weak var animalAddress: UILabel!
     
     var animal: Animal?
-    
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,10 +24,26 @@ class AnimalDetailViewController: UIViewController {
         self.navigationController?.isNavigationBarHidden = false
         // Do any additional setup after loading the view.
         
-        
-        
         animalName.text = animal?.name
         animalDescription.text = animal?.descriptionOfAnimal
+        
+        
+        let location = CLLocation(latitude: (animal?.latitudeOfAnimal)!, longitude: (animal?.longtitudeOfAnimal)!)
+        let geoCoder = CLGeocoder()
+        geoCoder.reverseGeocodeLocation(location, completionHandler: {(placemarks, error) in
+            if error == nil {
+                let firstLocation = placemarks?[0]
+                
+                //print(firstLocation!.name, firstLocation!.locality, firstLocation?.administrativeArea, firstLocation!.postalCode)
+                
+                self.animalAddress.text = "\((firstLocation!.name)!), \((firstLocation!.locality)!), \((firstLocation!.administrativeArea)!), \((firstLocation!.postalCode)!)"
+                
+                //completionHandler(firstLocation)
+            } else {
+                //completionHandler(nil)
+            }
+        })
+        
         
         do {
             

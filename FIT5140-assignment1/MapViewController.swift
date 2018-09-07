@@ -18,7 +18,7 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // set initial location in Honolulu
+        // set initial location in monash caulfield campus
         let initialLocation = CLLocation(latitude: -37.877, longitude: 145.045)
         centerMapOnLocation(location: initialLocation)
     }
@@ -26,11 +26,6 @@ class MapViewController: UIViewController {
     func centerMapOnLocation(location: CLLocation) {
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRadius, regionRadius)
         mapView.setRegion(coordinateRegion, animated: true)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func addAnnotation(annotation: MKAnnotation) {

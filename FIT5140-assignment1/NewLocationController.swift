@@ -139,15 +139,6 @@ class NewLocationController: UIViewController, CLLocationManagerDelegate, UIText
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        let imgBackArrow = UIImage(named: "backButton-48")
-//        
-//        navigationController?.navigationBar.backIndicatorImage = imgBackArrow
-//        navigationController?.navigationBar.backIndicatorTransitionMaskImage = imgBackArrow
-//        
-//        navigationItem.leftItemsSupplementBackButton = true
-//        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-        
-        
         descriptionTextView.textColor = UIColor.lightGray
         descriptionTextView.delegate = self
         

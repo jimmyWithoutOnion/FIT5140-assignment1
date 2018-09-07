@@ -48,8 +48,6 @@ class LocationListController: UITableViewController, newLocationDelegate, UISear
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Animal")
         do {
             let animals = try managedObjectContext.fetch(fetchRequest) as! [Animal]
-//            print(animals)
-//            print(animals.count)
             
             if animals.count == 0 {
                 

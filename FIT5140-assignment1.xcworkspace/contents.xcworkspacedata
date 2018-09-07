@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Monash University-Caulfield.gpx">
+   </FileRef>
+   <FileRef
       location = "group:FIT5140-assignment1.xcodeproj">
    </FileRef>
    <FileRef
